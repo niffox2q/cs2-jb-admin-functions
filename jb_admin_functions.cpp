@@ -43,7 +43,7 @@ bool b_debug = true;
 std::string sBanPermission = "@admin/jb_banct";
 std::string sKickCTPermission = "@admin/jb_kickct";
 std::string sCheckCTBanPermission = "@admin/jb_checkban";
-std::string sUnbanCTPermission = "@admin/jb_unbanban";
+std::string sUnbanCTPermission = "@admin/jb_unbanct";
 
 //==========================================
 // HELPERS

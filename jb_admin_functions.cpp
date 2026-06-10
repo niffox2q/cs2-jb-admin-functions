@@ -188,7 +188,7 @@ void BanPlayer(int iAdmin, std::string arg1, int iDuration, std::string reason) 
     bool isDigits = OnlyDigits(arg1.c_str());
     int targetSlot = -1;
     uint64_t targetSid = 0;
-    int iTarget = -1; // Слот игрока, ЕСЛИ он на сервере
+    int iTarget = -1; 
     std::string sTargetName = "Unknown";
 
     if (isDigits) {
@@ -196,11 +196,11 @@ void BanPlayer(int iAdmin, std::string arg1, int iDuration, std::string reason) 
             targetSlot = atoi(arg1.c_str());
         } else if (arg1.length() == 17) { 
             targetSid = std::stoull(arg1);
-            sTargetName = arg1; // По умолчанию именем будет сам SteamID
+            sTargetName = arg1; 
         }
     }
 
-    // Проверяем, есть ли игрок на сервере прямо сейчас
+
     for (int i = 0; i < MAX_PLAYERS; i++) {
         if (players_api->IsFakeClient(i)) continue;
         
@@ -209,18 +209,18 @@ void BanPlayer(int iAdmin, std::string arg1, int iDuration, std::string reason) 
 
         if (targetSlot != -1 && i == targetSlot) {
             iTarget = i;
-            targetSid = controller->m_steamID; // Узнали SID по слоту
-            sTargetName = controller->GetPlayerName(); // Узнали ник
+            targetSid = controller->m_steamID; 
+            sTargetName = controller->GetPlayerName(); 
             break;
         } 
         else if (targetSid != 0 && controller->m_steamID == targetSid) {
             iTarget = i;
-            sTargetName = controller->GetPlayerName(); // Игрок онлайн, меняем SteamID на реальный ник
+            sTargetName = controller->GetPlayerName(); 
             break;
         }
     }
 
-    // Если мы не нашли игрока на сервере И нам не дали готовый SteamID -> банить некого
+
     if (iTarget == -1 && targetSid == 0) {
         if (bConsole) META_CONPRINTF("[Jailbreak] Target not found.\n");
         else PrintSlotPrefixed(iAdmin, GetTranslation("AdminFunctions_CantFindTarget"));
@@ -243,12 +243,11 @@ void BanPlayer(int iAdmin, std::string arg1, int iDuration, std::string reason) 
 
     if (!connection) return;
     
-    // Передаем targetSid вместо iTargetSID
     connection->Query(query, [bConsole, iTarget, iAdmin, iDuration, reason, sAdminName, sTargetName, targetSid](ISQLQuery* res) {
         if (res && res->GetAffectedRows() > 0) {
             char msg[256];
             
-            // Если игрок в онлайне (iTarget != -1), пишем ему лично и кидаем за ТТ
+
             if (iTarget != -1) {
                 g_SMAPI->Format(msg, sizeof(msg), GetTranslation("AdminFunctions_YouGotBanned"), sAdminName.c_str(), reason.c_str(), TimeConverter(iDuration).c_str());
                 PrintSlotPrefixed(iTarget, msg);
@@ -261,7 +260,6 @@ void BanPlayer(int iAdmin, std::string arg1, int iDuration, std::string reason) 
                 }
             }
 
-            // Отчитываемся админу об успешном бане
             if (!bConsole) {
                 g_SMAPI->Format(msg, sizeof(msg), GetTranslation("AdminFunctions_YouBannedPlayer"), sTargetName.c_str(), reason.c_str(), TimeConverter(iDuration).c_str());
                 PrintSlotPrefixed(iAdmin, msg);
@@ -580,7 +578,6 @@ void HandleUnBanCommand(int iAdmin, const CCommand &args) {
         }
     };
 
-    // Используем правильный пермишн
     if (!bConsole && !admin_api->HasPermission(iAdmin, sUnbanCTPermission.c_str())) {
         PrintSlotPrefixed(iAdmin, GetTranslation("AdminFunctions_NoPermission"));
         return;

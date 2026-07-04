@@ -539,7 +539,7 @@ void HandleCheckBanCommand(int iAdmin, const CCommand &args) {
                 } else {
                     char msg[256];
                     g_SMAPI->Format(msg, sizeof(msg),
-                        GetTranslation("AdminFunctions_CheckBanNotBanned"), arg1.c_str());
+                        GetTranslation("AdminFunctions_CheckBanNotBanned"), iTargetSID);
 
                     PrintSlotPrefixed(iAdmin, msg);
                     utils->PrintToConsole(iAdmin, "[Jailbreak] Player %llu not banned.", iTargetSID);
@@ -745,4 +745,4 @@ const char* jb_admin_functions::GetLicense() { return "Private"; }
 const char* jb_admin_functions::GetLogTag() { return "[JB] Admin Functions"; }
 const char* jb_admin_functions::GetName() { return "[JB] Admin Functions"; }
 const char* jb_admin_functions::GetURL() { return "https://t.me/niffox_2q"; }
-const char* jb_admin_functions::GetVersion() { return "1.0.0"; }
+const char* jb_admin_functions::GetVersion() { return "1.0.1"; }
